@@ -143,7 +143,7 @@ export default function Footer() {
           </div>
           
           <p className="text-stone-600 text-xs sm:text-sm leading-relaxed mb-6 max-w-xs font-sans">
-            India's largest Rudraksha and Pooja Accessories brand trusted by thousands of devotees worldwide.
+            India&apos;s largest Rudraksha and Pooja Accessories brand trusted by thousands of devotees worldwide.
           </p>
 
           <div className="w-full border-t border-stone-200/60 my-4" />
@@ -188,7 +188,7 @@ export default function Footer() {
               "Best Sellers"
             ].map((item) => (
               <li key={item}>
-                <Link href="/rudraksha" className="flex items-center justify-between hover:text-[#c3a267] transition-colors group">
+                <Link href="/shop" className="flex items-center justify-between hover:text-[#c3a267] transition-colors group">
                   <span>{item}</span>
                   <span className="text-[9px] text-stone-400 group-hover:text-[#c3a267] transition-transform duration-200 translate-x-0 group-hover:translate-x-0.5">→</span>
                 </Link>
@@ -241,7 +241,7 @@ export default function Footer() {
               "Careers"
             ].map((item) => (
               <li key={item}>
-                <Link href="/about" className="hover:text-[#c3a267] transition-colors">
+                <Link href="/about-us" className="hover:text-[#c3a267] transition-colors">
                   {item}
                 </Link>
               </li>

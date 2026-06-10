@@ -8,10 +8,7 @@ import {
   ShoppingBag, 
   User, 
   Menu, 
-  X, 
-  Sparkles,
-  Flame,
-  Award
+  X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -24,12 +21,9 @@ import {
 } from "@/components/ui/sheet";
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
-  navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 
 export default function Navbar() {
@@ -37,18 +31,32 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
-  const [mounted, setMounted] = React.useState(false);
 
-  // Dynamic cart count state
-  const [cartCount, setCartCount] = React.useState(2);
+  const [cartCount, setCartCount] = React.useState(() => {
+    if (typeof window === "undefined") {
+      return 2;
+    }
+
+    try {
+      const stored = localStorage.getItem("rudraksha-cart");
+      if (stored) {
+        const items: Array<{ qty?: number }> = JSON.parse(stored);
+        return items.reduce((acc, item) => acc + (item.qty ?? 0), 0);
+      }
+    } catch (e) {
+      console.error(e);
+    }
+
+    return 2;
+  });
 
   React.useEffect(() => {
     const updateCount = () => {
       try {
         const stored = localStorage.getItem("rudraksha-cart");
         if (stored) {
-          const items = JSON.parse(stored);
-          const total = items.reduce((acc: number, item: any) => acc + item.qty, 0);
+          const items: Array<{ qty: number }> = JSON.parse(stored);
+          const total = items.reduce((acc: number, item) => acc + item.qty, 0);
           setCartCount(total);
         } else {
           setCartCount(2); // seed value
@@ -67,7 +75,6 @@ export default function Navbar() {
   }, []);
 
   React.useEffect(() => {
-    setMounted(true);
     const handleScroll = () => {
       if (window.scrollY > 20) {
         setIsScrolled(true);
@@ -79,12 +86,12 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const isHomeActive = mounted && pathname === "/";
-  const isShopActive = mounted && pathname === "/rudraksha";
-  const isAboutActive = mounted && pathname === "/about";
-  const isContactActive = mounted && pathname === "/contact";
+  const isHomeActive = pathname === "/";
+  const isShopActive = pathname === "/shop";
+  const isAboutActive = pathname === "/about-us";
+  const isContactActive = pathname === "/contact";
 
-  const showDarkNavbar = isScrolled || (mounted && pathname !== "/");
+  const showDarkNavbar = isScrolled || pathname !== "/";
 
   return (
     <>
@@ -175,7 +182,7 @@ export default function Navbar() {
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link
-                      href="/rudraksha"
+                      href="/shop"
                       className={cn(
                         "relative text-[11px] font-bold tracking-[0.2em] uppercase transition-colors py-2 block hover:bg-transparent! focus:bg-transparent! active:bg-transparent! bg-transparent!",
                         showDarkNavbar 
@@ -198,7 +205,7 @@ export default function Navbar() {
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
                     <Link
-                      href="/about"
+                      href="/about-us"
                       className={cn(
                         "relative text-[11px] font-bold tracking-[0.2em] uppercase transition-colors py-2 block hover:bg-transparent! focus:bg-transparent! active:bg-transparent! bg-transparent!",
                         showDarkNavbar 
@@ -323,7 +330,7 @@ export default function Navbar() {
                     <Link href="/" className="hover:text-amber-750 py-1.5 border-b border-zinc-100">
                       HOME
                     </Link>
-                    <Link href="/rudraksha" className="hover:text-amber-750 py-1.5 border-b border-zinc-100">
+                    <Link href="/shop" className="hover:text-amber-750 py-1.5 border-b border-zinc-100">
                       SHOP RUDRAKSHA
                     </Link>
                     <Link href="/pooja" className="hover:text-amber-750 py-1.5 border-b border-zinc-100">
@@ -332,7 +339,7 @@ export default function Navbar() {
                     <Link href="/astro" className="hover:text-amber-750 py-1.5 border-b border-zinc-100">
                       ASTRO SERVICES
                     </Link>
-                    <Link href="/about" className="hover:text-amber-750 py-1.5 border-b border-zinc-100">
+                    <Link href="/about-us" className="hover:text-amber-750 py-1.5 border-b border-zinc-100">
                       ABOUT US
                     </Link>
 

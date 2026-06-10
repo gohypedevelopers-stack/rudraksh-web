@@ -2,27 +2,31 @@
 
 import * as React from "react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import Footer from "@/components/Footer";
 
 // Mock Database of Products
-const mockDb: Record<string, {
-  name: string;
-  category: string;
-  tagline: string;
-  price: string;
-  oldPrice: string;
-  discount: string;
-  rating: number;
-  reviewsCount: number;
-  soldCount: string;
-  benefits: string[];
-  description: string;
-  rulingPlanet?: string;
-  deity?: string;
-  mantra?: string;
-  images: string[];
-  sizes?: string[];
-}> = {
+const mockDb: Record<
+  string,
+  {
+    name: string;
+    category: string;
+    tagline: string;
+    price: string;
+    oldPrice: string;
+    discount: string;
+    rating: number;
+    reviewsCount: number;
+    soldCount: string;
+    benefits: string[];
+    description: string;
+    rulingPlanet?: string;
+    deity?: string;
+    mantra?: string;
+    images: string[];
+    sizes?: string[];
+  }
+> = {
   "7-mukhi-bracelet": {
     name: "7 Mukhi Rudraksha Bracelet",
     category: "Bracelets",
@@ -38,14 +42,15 @@ const mockDb: Record<string, {
       "Hand-strung with durable elastic thread",
       "Energized & Blessed",
       "X-Ray Verified for authenticity",
-      "Suitable for daily wear"
+      "Suitable for daily wear",
     ],
-    description: "The 7 Mukhi Rudraksha is ruled by Goddess Mahalakshmi and is known to attract wealth, prosperity, and good luck. It helps in reducing stress, enhances focus, and brings overall well-being. This bracelet combines multiple authentic beads, making it a powerful spiritual tool and an elegant everyday accessory.",
+    description:
+      "The 7 Mukhi Rudraksha is ruled by Goddess Mahalakshmi and is known to attract wealth, prosperity, and good luck. It helps in reducing stress, enhances focus, and brings overall well-being. This bracelet combines multiple authentic beads, making it a powerful spiritual tool and an elegant everyday accessory.",
     rulingPlanet: "Saturn (Shani)",
     deity: "Goddess Mahalakshmi",
     mantra: "Om Hum Namah",
     images: ["/bracelet_7_mukhi.png", "/bracelet_worn.png", "/swasthya_kavach.png", "/one_mukhi.png"],
-    sizes: ["Small (6 - 7 inch)", "Medium (7 - 8 inch)", "Large (8 - 9 inch)"]
+    sizes: ["Small (6 - 7 inch)", "Medium (7 - 8 inch)", "Large (8 - 9 inch)"],
   },
   "5-mukhi-bracelet": {
     name: "5 Mukhi Rudraksha Bracelet",
@@ -62,14 +67,15 @@ const mockDb: Record<string, {
       "Hand-crafted with sturdy stretchable cord",
       "Brings peace, health, and mental clarity",
       "Lab Certified authentic beads",
-      "Comfortable for everyday spiritual wear"
+      "Comfortable for everyday spiritual wear",
     ],
-    description: "The 5 Mukhi Rudraksha represents Lord Kalagni Rudra, a form of Lord Shiva. It is highly revered for monitoring blood pressure, reducing stress, and enhancing inner peace. Perfect for spiritual growth and mindfulness.",
+    description:
+      "The 5 Mukhi Rudraksha represents Lord Kalagni Rudra, a form of Lord Shiva. It is highly revered for monitoring blood pressure, reducing stress, and enhancing inner peace. Perfect for spiritual growth and mindfulness.",
     rulingPlanet: "Jupiter (Guru)",
     deity: "Lord Kalagni Rudra",
     mantra: "Om Hreem Namah",
     images: ["/bracelet_worn.png", "/bracelet_7_mukhi.png", "/nirakar.png"],
-    sizes: ["Small (6 - 7 inch)", "Medium (7 - 8 inch)", "Large (8 - 9 inch)"]
+    sizes: ["Small (6 - 7 inch)", "Medium (7 - 8 inch)", "Large (8 - 9 inch)"],
   },
   "one-mukhi": {
     name: "1 Mukhi Rudraksha Bead",
@@ -86,14 +92,15 @@ const mockDb: Record<string, {
       "Lab Certified & X-Ray Tested",
       "Brings supreme focus and leadership",
       "Removes planetary defects of Sun",
-      "Premium wooden gift box included"
+      "Premium wooden gift box included",
     ],
-    description: "The rarest of all Rudraksha beads, the 1 Mukhi is ruled by Lord Shiva himself. It is the symbol of pure consciousness. Wearing this bead elevates spiritual awareness, unlocks leadership qualities, and shields against negative energies.",
+    description:
+      "The rarest of all Rudraksha beads, the 1 Mukhi is ruled by Lord Shiva himself. It is the symbol of pure consciousness. Wearing this bead elevates spiritual awareness, unlocks leadership qualities, and shields against negative energies.",
     rulingPlanet: "Sun (Surya)",
     deity: "Lord Shiva",
     mantra: "Om Hreem Namah",
     images: ["/one_mukhi.png", "/collector_bead.png", "/nirakar.png"],
-  }
+  },
 };
 
 // Fallback generator for other IDs (e.g. 2-mukhi, gauri-shankar, etc.)
@@ -108,18 +115,17 @@ function getProductById(id: string) {
   if (normalized === "5-mukhi" || normalized === "5-mukhi-bracelet") {
     return mockDb["5-mukhi-bracelet"];
   }
-  
+
   if (mockDb[normalized]) return mockDb[normalized];
-  
-  // Format slug to readable title
+
   const cleanName = id
     .split("-")
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
     .join(" ");
-  
+
   const isKavach = id.toLowerCase().includes("kavach");
   const isBracelet = id.toLowerCase().includes("bracelet");
-  
+
   let img = "/nirakar.png";
   if (id.includes("one")) img = "/one_mukhi.png";
   else if (id.includes("fourteen") || id.includes("14")) img = "/fourteen_mukhi.png";
@@ -132,7 +138,7 @@ function getProductById(id: string) {
   else if (id.includes("swasthya")) img = "/swasthya_kavach.png";
   else if (id.includes("kaal")) img = "/kaal_sarpa_kavach.png";
   else if (id.includes("devi")) img = "/devi_shakti_kavach.png";
-  
+
   return {
     name: cleanName.toUpperCase().includes("MUKHI") ? cleanName : `${cleanName} Rudraksha`,
     category: isKavach ? "Kavach" : isBracelet ? "Bracelets" : "Beads",
@@ -148,92 +154,70 @@ function getProductById(id: string) {
       "Energized at temple by Vedic priests",
       "Lab Certified for absolute purity",
       "Induces calm and inner positive vibes",
-      "Ships with authentication certificate"
+      "Ships with authentication certificate",
     ],
     description: `The sacred ${cleanName} is hand-selected and verified to deliver divine power and grace. Perfect for spiritual practitioners, collectors, and devotees looking for authentic spiritual remedies.`,
     rulingPlanet: "Jupiter (Guru)",
     deity: "Lord Shiva",
     mantra: "Om Namah Shivaya",
     images: [img, "/collector_bead.png", "/nirakar.png"],
-    sizes: isBracelet ? ["Small (6 - 7 inch)", "Medium (7 - 8 inch)", "Large (8 - 9 inch)"] : undefined
+    sizes: isBracelet ? ["Small (6 - 7 inch)", "Medium (7 - 8 inch)", "Large (8 - 9 inch)"] : undefined,
   };
 }
 
-interface PageProps {
-  params: Promise<{ id: string }>;
-}
+function ProductDetailContent({ slug }: { slug: string }) {
+  const product = getProductById(slug);
 
-export default function ProductDetailPage({ params }: PageProps) {
-  const unwrappedParams = React.use(params);
-  const id = unwrappedParams.id;
-  const product = getProductById(id);
-
-  // States
   const [activeImg, setActiveImg] = React.useState(product.images[0]);
   const [selectedSize, setSelectedSize] = React.useState(product.sizes ? product.sizes[1] : "");
   const [quantity, setQuantity] = React.useState(1);
   const [activeTab, setActiveTab] = React.useState("description");
 
-  // Add to cart click handler
   const handleAddToCart = () => {
     const parsedPrice = parseInt(product.price.replace(/,/g, ""), 10);
     const parsedOldPrice = parseInt(product.oldPrice.replace(/,/g, ""), 10);
-    
+
     const cartEvent = new CustomEvent("add-to-cart", {
       detail: {
-        id: id,
+        id: slug,
         name: product.name,
         subtitle: product.tagline,
         price: parsedPrice,
         oldPrice: parsedOldPrice,
         discount: product.discount,
-        img: product.images[0]
-      }
+        img: product.images[0],
+      },
     });
     window.dispatchEvent(cartEvent);
   };
 
-  // Keep active image updated if params change
-  React.useEffect(() => {
-    setActiveImg(product.images[0]);
-    if (product.sizes) {
-      setSelectedSize(product.sizes[1]);
-    }
-  }, [id]);
-
   return (
     <div className="flex flex-col w-full bg-[#FCFBF7] text-zinc-900 overflow-hidden min-h-screen pt-24">
       <div className="container mx-auto px-4 md:px-8 py-8 max-w-6xl">
-        
-        {/* Breadcrumb Trail */}
         <nav className="text-stone-500 text-xs sm:text-sm mb-8 font-sans">
-          <Link href="/" className="hover:text-stone-800 transition-colors">Home</Link>
+          <Link href="/" className="hover:text-stone-800 transition-colors">
+            Home
+          </Link>
           <span className="mx-2.5">/</span>
-          <Link href="/rudraksha" className="hover:text-stone-800 transition-colors">{product.category}</Link>
+          <Link href="/shop" className="hover:text-stone-800 transition-colors">
+            {product.category}
+          </Link>
           <span className="mx-2.5">/</span>
           <span className="text-stone-800 font-medium">{product.name}</span>
         </nav>
 
-        {/* Main Product Frame */}
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start mb-16">
-          
-          {/* LEFT: Product Gallery Grid */}
           <div className="lg:col-span-7 grid grid-cols-12 gap-4">
-            
-            {/* Column of Thumbnails */}
             <div className="col-span-2 flex flex-col gap-3">
               {product.images.map((imgUrl, index) => (
                 <button
                   key={index}
                   onClick={() => setActiveImg(imgUrl)}
                   className={`relative aspect-square w-full rounded-xl overflow-hidden border bg-white flex items-center justify-center p-1 cursor-pointer transition-all duration-300 ${
-                    activeImg === imgUrl 
-                      ? "border-black shadow-xs ring-1 ring-black/10" 
-                      : "border-stone-200 hover:border-stone-400"
+                    activeImg === imgUrl ? "border-black shadow-xs ring-1 ring-black/10" : "border-stone-200 hover:border-stone-400"
                   }`}
                 >
                   <img src={imgUrl} alt={`Thumbnail ${index}`} className="w-full h-full object-cover rounded-lg" />
-                  {/* Decorative Play Button for video simulation on thumbnail 4 */}
                   {index === 3 && (
                     <div className="absolute inset-0 bg-black/25 flex items-center justify-center">
                       <div className="w-6 h-6 rounded-full bg-white/90 flex items-center justify-center shadow-xs">
@@ -247,15 +231,9 @@ export default function ProductDetailPage({ params }: PageProps) {
               ))}
             </div>
 
-            {/* Main Image View */}
             <div className="col-span-10 relative aspect-[4/5] sm:aspect-square w-full rounded-2xl overflow-hidden border border-stone-200/60 bg-white flex items-center justify-center group">
-              <img 
-                src={activeImg} 
-                alt={product.name} 
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-              />
-              
-              {/* Zoom lens overlay icon */}
+              <img src={activeImg} alt={product.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
+
               <div className="absolute top-4 right-4 w-9 h-9 rounded-full bg-white/80 backdrop-blur-xs flex items-center justify-center border border-stone-200/50 shadow-xs cursor-pointer hover:bg-white transition-colors">
                 <svg className="w-4.5 h-4.5 text-stone-750" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
                   <circle cx="11" cy="11" r="8" />
@@ -263,41 +241,29 @@ export default function ProductDetailPage({ params }: PageProps) {
                 </svg>
               </div>
             </div>
-
           </div>
 
-          {/* RIGHT: Product Meta & Purchase Panel */}
           <div className="lg:col-span-5 text-left">
-            
-            {/* Bestseller Badge */}
             <span className="inline-block bg-[#F5EDE2] text-[#8c4f1c] text-[10px] font-bold tracking-widest uppercase px-3 py-1 rounded-sm mb-3">
               Bestseller
             </span>
 
-            {/* Product Title */}
             <h1 className="font-serif text-2xl sm:text-3.5xl font-bold text-stone-955 tracking-wide leading-tight mb-2">
               {product.name}
             </h1>
 
-            {/* Tagline */}
             <p className="text-[#c3a267] text-xs font-bold tracking-widest uppercase mb-4">
               {product.tagline}
             </p>
 
-            {/* Pricing Section */}
             <div className="flex items-baseline gap-4 mb-4">
-              <span className="font-sans text-2xl sm:text-3xl font-bold text-stone-900">
-                ₹{product.price}
-              </span>
-              <span className="font-sans text-stone-450 line-through text-sm sm:text-base">
-                ₹{product.oldPrice}
-              </span>
+              <span className="font-sans text-2xl sm:text-3xl font-bold text-stone-900">₹{product.price}</span>
+              <span className="font-sans text-stone-450 line-through text-sm sm:text-base">₹{product.oldPrice}</span>
               <span className="text-[#16a34a] text-xs sm:text-sm font-bold bg-green-50 px-2 py-0.5 rounded-sm">
                 {product.discount}
               </span>
             </div>
 
-            {/* Reviews / Ratings */}
             <div className="flex items-center gap-2 mb-6 font-sans text-xs sm:text-sm text-stone-500">
               <div className="flex text-amber-500">
                 {[...Array(5)].map((_, i) => (
@@ -312,7 +278,6 @@ export default function ProductDetailPage({ params }: PageProps) {
               <span className="text-stone-750 font-medium">{product.soldCount} sold</span>
             </div>
 
-            {/* Benefit Checklist */}
             <ul className="space-y-2.5 border-t border-b border-stone-200/80 py-5 mb-6 text-stone-700 text-xs sm:text-sm font-sans">
               {product.benefits.map((benefit, i) => (
                 <li key={i} className="flex items-start gap-2.5">
@@ -324,7 +289,6 @@ export default function ProductDetailPage({ params }: PageProps) {
               ))}
             </ul>
 
-            {/* Size Configuration Option (Bracelets only) */}
             {product.sizes && (
               <div className="mb-6">
                 <span className="block text-[10px] font-bold text-stone-450 uppercase tracking-widest mb-3">
@@ -348,11 +312,8 @@ export default function ProductDetailPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Quantity Picker */}
             <div className="mb-6">
-              <span className="block text-[10px] font-bold text-stone-450 uppercase tracking-widest mb-3">
-                Quantity
-              </span>
+              <span className="block text-[10px] font-bold text-stone-450 uppercase tracking-widest mb-3">Quantity</span>
               <div className="flex items-center border border-stone-200 rounded-lg w-32 bg-white overflow-hidden">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -370,23 +331,19 @@ export default function ProductDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* CTA Button Block */}
             <div className="flex flex-col gap-3.5 mb-8">
-              {/* Solid Black ADD TO CART Button */}
-              <button 
+              <button
                 onClick={handleAddToCart}
                 className="w-full bg-black hover:bg-zinc-800 text-white font-bold text-xs sm:text-sm tracking-[0.2em] uppercase h-14 rounded-xl transition-all duration-300 cursor-pointer shadow-xs hover:shadow-md"
               >
                 ADD TO CART
               </button>
 
-              {/* White buy now outline button */}
               <button className="w-full bg-white hover:bg-black text-black hover:text-white border border-black font-bold text-xs sm:text-sm tracking-[0.2em] uppercase h-14 rounded-xl transition-all duration-300 cursor-pointer">
                 BUY NOW
               </button>
             </div>
 
-            {/* Trust Badges */}
             <div className="grid grid-cols-3 gap-4 text-center border-t border-stone-200/80 pt-6 font-sans text-[10px] sm:text-xs text-stone-500 leading-normal">
               <div className="flex flex-col items-center">
                 <svg className="w-5 h-5 text-stone-600 mb-1" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
@@ -414,19 +371,15 @@ export default function ProductDetailPage({ params }: PageProps) {
                 <span>7 Days Return Policy</span>
               </div>
             </div>
-
           </div>
         </div>
 
-        {/* Tab Description Details section */}
         <div className="border border-stone-200/60 rounded-2xl p-6 sm:p-8 bg-white mb-16 shadow-2xs">
           <div className="border-b border-stone-200/80 flex gap-8 mb-6">
             <button
               onClick={() => setActiveTab("description")}
               className={`pb-3 text-xs sm:text-sm font-bold tracking-wider uppercase border-b-2 cursor-pointer transition-all ${
-                activeTab === "description" 
-                  ? "border-[#c3a267] text-[#c3a267]" 
-                  : "border-transparent text-stone-400 hover:text-stone-750"
+                activeTab === "description" ? "border-[#c3a267] text-[#c3a267]" : "border-transparent text-stone-400 hover:text-stone-750"
               }`}
             >
               Description
@@ -434,13 +387,9 @@ export default function ProductDetailPage({ params }: PageProps) {
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-            {/* Description Text Column */}
             <div className="lg:col-span-8 text-left">
-              <p className="text-stone-700 text-sm leading-relaxed mb-8 font-sans">
-                {product.description}
-              </p>
+              <p className="text-stone-700 text-sm leading-relaxed mb-8 font-sans">{product.description}</p>
 
-              {/* Icons grid */}
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-6">
                 <div className="flex flex-col items-center text-center">
                   <div className="w-11 h-11 rounded-full bg-[#FCFBF7] border border-[#c3a267]/30 flex items-center justify-center text-[#c3a267] mb-3">
@@ -488,7 +437,6 @@ export default function ProductDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* Right Authenticity Box */}
             <div className="lg:col-span-4 bg-[#F9F6F0] rounded-xl p-5 border border-[#c3a267]/15 text-left">
               <h4 className="font-serif text-sm font-bold text-stone-900 tracking-wider mb-2.5 uppercase">
                 X-Ray Verified
@@ -496,7 +444,7 @@ export default function ProductDetailPage({ params }: PageProps) {
               <p className="text-stone-600 text-xs sm:text-sm font-sans leading-relaxed mb-4">
                 Each bead in this bracelet undergoes strict X-ray testing and verification in our ISO certified lab to verify inner compartmental structure and seed maturity.
               </p>
-              
+
               <div className="border border-stone-200/60 rounded-lg overflow-hidden bg-white p-2.5 flex items-center gap-3.5 mb-3.5">
                 <div className="w-11 h-11 shrink-0 rounded-md overflow-hidden bg-stone-50 border border-stone-200/50">
                   <img src="/bracelet_7_mukhi.png" alt="Report icon" className="w-full h-full object-cover" />
@@ -511,11 +459,9 @@ export default function ProductDetailPage({ params }: PageProps) {
                 View Sample Report
               </span>
             </div>
-
           </div>
         </div>
 
-        {/* RELATED PRODUCTS / YOU MAY ALSO LIKE Section */}
         <section className="text-left mb-8">
           <h2 className="font-serif text-2xl font-normal text-stone-900 mb-8 uppercase tracking-wide">
             You May Also Like
@@ -526,9 +472,12 @@ export default function ProductDetailPage({ params }: PageProps) {
               { name: "Siddh Rudraksha Mala", price: "2,499", oldPrice: "3,499", discount: "29% OFF", img: "/category_siddh_mala.jpg" },
               { name: "5 Mukhi Rudraksha Bracelet", price: "999", oldPrice: "1,499", discount: "33% OFF", img: "/bracelet_worn.png" },
               { name: "8 Mukhi Rudraksha Mala", price: "1,799", oldPrice: "2,499", discount: "28% OFF", img: "/collector_bead.png" },
-              { name: "Gold Plated Rudraksha Bracelet", price: "1,599", oldPrice: "2,299", discount: "30% OFF", img: "/category_bracelet.jpg" }
+              { name: "Gold Plated Rudraksha Bracelet", price: "1,599", oldPrice: "2,299", discount: "30% OFF", img: "/category_bracelet.jpg" },
             ].map((item, idx) => (
-              <div key={idx} className="bg-white border border-stone-200/50 rounded-2xl overflow-hidden shadow-2xs hover:shadow-md transition-all duration-300 group flex flex-col justify-between p-3.5 sm:p-5 text-center min-h-[290px]">
+              <div
+                key={idx}
+                className="bg-white border border-stone-200/50 rounded-2xl overflow-hidden shadow-2xs hover:shadow-md transition-all duration-300 group flex flex-col justify-between p-3.5 sm:p-5 text-center min-h-[290px]"
+              >
                 <div className="flex flex-col items-center">
                   <div className="relative aspect-square w-24 h-24 sm:w-28 sm:h-28 overflow-hidden rounded-full border border-stone-200/40 bg-stone-50 flex items-center justify-center mb-4 cursor-pointer">
                     <img src={item.img} alt={item.name} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" />
@@ -552,10 +501,8 @@ export default function ProductDetailPage({ params }: PageProps) {
             ))}
           </div>
         </section>
-
       </div>
 
-      {/* Trust Highlight Banner */}
       <div className="w-full bg-[#3f2a1b] text-stone-100 py-6 border-t border-b border-stone-800">
         <div className="max-w-6xl mx-auto px-4 md:px-8 grid grid-cols-2 md:grid-cols-4 gap-6 text-center text-xs font-sans">
           <div className="flex items-center justify-center gap-2.5">
@@ -584,7 +531,7 @@ export default function ProductDetailPage({ params }: PageProps) {
             </svg>
             <div className="flex flex-col text-left">
               <span className="font-bold">Dedicated Support</span>
-              <span className="text-[10px] text-stone-300">We're Here to Help</span>
+              <span className="text-[10px] text-stone-300">We&apos;re Here to Help</span>
             </div>
           </div>
           <div className="flex items-center justify-center gap-2.5">
@@ -605,4 +552,12 @@ export default function ProductDetailPage({ params }: PageProps) {
       <Footer />
     </div>
   );
+}
+
+export default function ProductDetailPage() {
+  const params = useParams<{ slug?: string | string[] }>();
+  const rawSlug = params?.slug;
+  const slug = Array.isArray(rawSlug) ? rawSlug[0] : rawSlug ?? "";
+
+  return <ProductDetailContent key={slug} slug={slug} />;
 }

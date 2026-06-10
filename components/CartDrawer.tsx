@@ -1,7 +1,7 @@
 "use client";
 
 import * as React from "react";
-import { X, ChevronRight, Plus, Minus, ShieldCheck, ChevronDown, ChevronUp } from "lucide-react";
+import { X, ChevronRight, Plus, Minus, ChevronDown, ChevronUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface CartItem {
@@ -17,10 +17,30 @@ interface CartItem {
 
 export default function CartDrawer() {
   const [isOpen, setIsOpen] = React.useState(false);
-  const [cartItems, setCartItems] = React.useState<CartItem[]>([]);
+  const [cartItems, setCartItems] = React.useState<CartItem[]>([
+    {
+      id: "10-mukhi",
+      name: "10 Mukhi Rudraksha (Regular)",
+      subtitle: "10 Mukhi • One - Face",
+      price: 495,
+      oldPrice: 3599,
+      discount: "31% OFF",
+      qty: 1,
+      img: "/garbh_gauri.png"
+    },
+    {
+      id: "4-mukhi",
+      name: "4 Mukhi Rudraksha (Regular)",
+      subtitle: "4 Mukhi • Four - Face",
+      price: 895,
+      oldPrice: 1299,
+      discount: "31% OFF",
+      qty: 1,
+      img: "/nirakar.png"
+    }
+  ]);
   const [isTotalDetailsOpen, setIsTotalDetailsOpen] = React.useState(false);
 
-  // Initialize and seed default items matching the user's mockup if empty
   const loadCart = () => {
     try {
       const stored = localStorage.getItem("rudraksha-cart");
@@ -58,9 +78,7 @@ export default function CartDrawer() {
   };
 
   React.useEffect(() => {
-    loadCart();
-
-    const handleOpenCart = (e: Event) => {
+    const handleOpenCart = () => {
       // Refresh items in case a new item was added
       loadCart();
       setIsOpen(true);
@@ -69,7 +87,7 @@ export default function CartDrawer() {
     const handleAddItem = (e: CustomEvent<Omit<CartItem, "qty">>) => {
       try {
         const stored = localStorage.getItem("rudraksha-cart");
-        let current: CartItem[] = stored ? JSON.parse(stored) : [];
+        const current: CartItem[] = stored ? JSON.parse(stored) : [];
         const existingIdx = current.findIndex((item) => item.id === e.detail.id);
         if (existingIdx > -1) {
           current[existingIdx].qty += 1;
