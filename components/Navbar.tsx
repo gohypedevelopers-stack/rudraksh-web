@@ -31,24 +31,7 @@ export default function Navbar() {
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
-
-  const [cartCount, setCartCount] = React.useState(() => {
-    if (typeof window === "undefined") {
-      return 2;
-    }
-
-    try {
-      const stored = localStorage.getItem("rudraksha-cart");
-      if (stored) {
-        const items: Array<{ qty?: number }> = JSON.parse(stored);
-        return items.reduce((acc, item) => acc + (item.qty ?? 0), 0);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-
-    return 2;
-  });
+  const [cartCount, setCartCount] = React.useState(2);
 
   React.useEffect(() => {
     const updateCount = () => {
