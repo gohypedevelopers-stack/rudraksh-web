@@ -95,15 +95,12 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return
-    const updateSelection = () => onSelect(api)
-    const frame = requestAnimationFrame(updateSelection)
-    api.on("reInit", updateSelection)
-    api.on("select", updateSelection)
+    onSelect(api)
+    api.on("reInit", onSelect)
+    api.on("select", onSelect)
 
     return () => {
-      cancelAnimationFrame(frame)
-      api?.off("reInit", updateSelection)
-      api?.off("select", updateSelection)
+      api?.off("select", onSelect)
     }
   }, [api, onSelect])
 

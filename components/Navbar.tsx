@@ -4,10 +4,11 @@ import * as React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { 
+  LogOut,
   Search, 
   ShoppingBag, 
-  User, 
   Menu, 
+  UserRound,
   X
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -25,6 +26,7 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
+import type { AuthUser } from "@/server/users/user.types";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -32,6 +34,7 @@ export default function Navbar() {
   const [isSearchOpen, setIsSearchOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
   const [cartCount, setCartCount] = React.useState(2);
+  const [authUser, setAuthUser] = React.useState<AuthUser | null>(null);
 
   React.useEffect(() => {
     const updateCount = () => {
@@ -69,12 +72,63 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  React.useEffect(() => {
+    let isMounted = true;
+
+    const syncAuthState = async () => {
+      try {
+        const response = await fetch("/api/auth/me", {
+          credentials: "include",
+        });
+
+        if (!response.ok) {
+          if (isMounted) {
+            setAuthUser(null);
+          }
+          return;
+        }
+
+        const data = (await response.json().catch(() => null)) as { user?: AuthUser } | null;
+
+        if (isMounted) {
+          setAuthUser(data?.user ?? null);
+        }
+      } catch (error) {
+        console.error(error);
+        if (isMounted) {
+          setAuthUser(null);
+        }
+      }
+    };
+
+    syncAuthState();
+    window.addEventListener("auth-changed", syncAuthState);
+
+    return () => {
+      isMounted = false;
+      window.removeEventListener("auth-changed", syncAuthState);
+    };
+  }, []);
+
   const isHomeActive = pathname === "/";
   const isShopActive = pathname === "/shop";
   const isAboutActive = pathname === "/about-us";
   const isContactActive = pathname === "/contact";
 
   const showDarkNavbar = isScrolled || pathname !== "/";
+
+  const handleLogout = async () => {
+    try {
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+      setAuthUser(null);
+      window.dispatchEvent(new Event("auth-changed"));
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <>
@@ -250,9 +304,10 @@ export default function Navbar() {
               <span className="sr-only">Search</span>
             </Button>
  
-            {/* Account Icon */}
-            <Link href="/account">
+            {/* Auth Icon */}
+            {!authUser ? (
               <Button
+                asChild
                 variant="ghost"
                 size="icon"
                 className={cn(
@@ -260,10 +315,25 @@ export default function Navbar() {
                   showDarkNavbar ? "text-zinc-900 hover:text-amber-700" : "text-white hover:text-amber-400"
                 )}
               >
-                <User className="w-[18px] h-[18px] stroke-[1.8]" />
-                <span className="sr-only">Account</span>
+                <Link href="/login" aria-label="Login">
+                  <UserRound className="w-[18px] h-[18px] stroke-[1.8]" />
+                  <span className="sr-only">Login</span>
+                </Link>
               </Button>
-            </Link>
+            ) : (
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={handleLogout}
+                className={cn(
+                  "h-8 w-8 hover:bg-transparent!",
+                  showDarkNavbar ? "text-zinc-900 hover:text-amber-700" : "text-white hover:text-amber-400"
+                )}
+              >
+                <LogOut className="w-[18px] h-[18px] stroke-[1.8]" />
+                <span className="sr-only">Logout</span>
+              </Button>
+            )}
  
             {/* Cart Icon */}
             <Button
@@ -329,6 +399,19 @@ export default function Navbar() {
                     <Link href="/contact" className="hover:text-amber-750 py-1.5 border-b border-zinc-100">
                       CONTACT
                     </Link>
+                    {!authUser ? (
+                      <Link href="/login" className="hover:text-amber-750 py-1.5 border-b border-zinc-100">
+                        LOGIN
+                      </Link>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={handleLogout}
+                        className="text-left hover:text-amber-750 py-1.5 border-b border-zinc-100 cursor-pointer"
+                      >
+                        LOGOUT
+                      </button>
+                    )}
                   </nav>
                 </SheetContent>
               </Sheet>

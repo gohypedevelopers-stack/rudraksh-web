@@ -1,7 +1,7 @@
 export default function MissionSection() {
   return (
     <section className="py-24 bg-[#FCFBF7] relative overflow-hidden">
-      <div className="absolute inset-0 bg-[url('/collection_bg.png')] bg-cover bg-center bg-no-repeat opacity-10 pointer-events-none z-0" />
+      <div className="absolute inset-0 pointer-events-none z-0 bg-[radial-gradient(circle_at_80%_20%,rgba(195,162,103,0.12),transparent_26%),radial-gradient(circle_at_20%_80%,rgba(0,0,0,0.04),transparent_30%),linear-gradient(180deg,rgba(252,251,247,0.92)_0%,rgba(247,242,234,0.98)_100%)]" />
 
       <div className="container mx-auto px-4 md:px-8 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-14">
