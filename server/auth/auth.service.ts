@@ -2,6 +2,7 @@ import "server-only";
 
 import { ConflictError, UnauthorizedError } from "@/server/http/errors";
 import type { LoginInput, SignupInput } from "@/server/auth/auth.validation";
+import { createAuthToken } from "@/server/auth/auth.jwt";
 import { comparePassword, hashPassword } from "@/server/utils/password";
 import { createUser, findUserByEmail, findUserByEmailWithPassword, findUserById } from "@/server/users/user.service";
 import { toAuthUser } from "@/server/utils/safe-user";
@@ -22,7 +23,7 @@ export async function registerUser(input: SignupInput): Promise<AuthUser> {
   });
 }
 
-export async function loginUser(input: LoginInput): Promise<AuthUser> {
+export async function loginUser(input: LoginInput): Promise<{ user: AuthUser; token: string }> {
   const user = await findUserByEmailWithPassword(input.email);
   if (!user) {
     throw new UnauthorizedError("Invalid email or password.");
@@ -33,7 +34,12 @@ export async function loginUser(input: LoginInput): Promise<AuthUser> {
     throw new UnauthorizedError("Invalid email or password.");
   }
 
-  return toAuthUser(user);
+  const safeUser = toAuthUser(user);
+
+  return {
+    user: safeUser,
+    token: createAuthToken(safeUser),
+  };
 }
 
 export async function getCurrentUser(userId: string): Promise<AuthUser | null> {

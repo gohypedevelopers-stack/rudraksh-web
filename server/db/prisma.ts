@@ -10,9 +10,27 @@ const globalForPrisma = globalThis as unknown as {
 
 const adapter = new PrismaNeon({
   connectionString: env.DATABASE_URL,
-});
+})
 
-export const prisma = globalForPrisma.prisma ?? new PrismaClient({ adapter });
+function hasRequiredDelegates(client: PrismaClient | undefined): client is PrismaClient {
+  return Boolean(
+    client &&
+      typeof client.product !== "undefined" &&
+      typeof client.inventory !== "undefined" &&
+      typeof client.order !== "undefined",
+  )
+}
+
+const existingClient = globalForPrisma.prisma
+let prismaClient: PrismaClient
+
+if (hasRequiredDelegates(existingClient)) {
+  prismaClient = existingClient
+} else {
+  prismaClient = new PrismaClient({ adapter })
+}
+
+export const prisma = prismaClient
 
 if (env.NODE_ENV !== "production") {
   globalForPrisma.prisma = prisma;

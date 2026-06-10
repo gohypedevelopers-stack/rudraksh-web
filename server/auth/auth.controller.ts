@@ -17,7 +17,7 @@ export async function signup(request: Request) {
 
     const user = await registerUser(parsed.data);
     const token = createAuthToken(user);
-    const response = jsonSuccess({ user }, 201);
+    const response = jsonSuccess({ success: true, user }, 201);
 
     setAuthCookie(response, token);
 
@@ -41,11 +41,10 @@ export async function login(request: Request) {
       return jsonError("Please provide a valid email and password.", 400);
     }
 
-    const user = await loginUser(parsed.data);
-    const token = createAuthToken(user);
-    const response = jsonSuccess({ user }, 200);
+    const result = await loginUser(parsed.data);
+    const response = jsonSuccess({ success: true, user: result.user }, 200);
 
-    setAuthCookie(response, token);
+    setAuthCookie(response, result.token);
 
     return response;
   } catch (error) {
@@ -78,7 +77,7 @@ export async function me(request: NextRequest) {
       return jsonError("Unauthorized", 401);
     }
 
-    return jsonSuccess({ user }, 200);
+    return jsonSuccess({ success: true, user }, 200);
   } catch (error) {
     console.error("AUTH_ME_ERROR", error);
     return jsonError("Unable to load the current user.", 500);

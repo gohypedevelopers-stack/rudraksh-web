@@ -63,7 +63,10 @@ export default function LoginForm() {
         body: JSON.stringify(parsed.data),
       });
 
-      const data = (await response.json().catch(() => null)) as { error?: string } | null;
+      const data = (await response.json().catch(() => null)) as {
+        error?: string;
+        user?: { role?: string } | null;
+      } | null;
 
       if (!response.ok) {
         setFormError(data?.error ?? "Unable to sign in right now.");
@@ -71,7 +74,13 @@ export default function LoginForm() {
       }
 
       window.dispatchEvent(new Event("auth-changed"));
-      router.replace("/");
+      if (data?.user?.role === "ADMIN") {
+        router.push("/dashboard");
+        router.refresh();
+        return;
+      }
+
+      router.push("/");
       router.refresh();
     } catch (error) {
       console.error(error);

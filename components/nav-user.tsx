@@ -1,37 +1,58 @@
 "use client"
 
-import {
-  Avatar,
-  AvatarFallback,
-  AvatarImage,
-} from "@/components/ui/avatar"
+import * as React from "react"
+import { useRouter } from "next/navigation"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { LogOutIcon } from "lucide-react"
+
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuGroup,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+import { Badge } from "@/components/ui/badge"
 import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
-import { ChevronsUpDownIcon, SparklesIcon, BadgeCheckIcon, CreditCardIcon, BellIcon, LogOutIcon } from "lucide-react"
+import type { AuthUser } from "@/server/users/user.types"
 
-export function NavUser({
-  user,
-}: {
-  user: {
-    name: string
-    email: string
-    avatar: string
+function getInitials(user: AuthUser) {
+  const nameParts = user.name?.trim().split(/\s+/).filter(Boolean) ?? []
+
+  if (nameParts.length > 0) {
+    return nameParts
+      .slice(0, 2)
+      .map((part) => part[0]?.toUpperCase())
+      .join("")
   }
-}) {
+
+  return user.email.slice(0, 2).toUpperCase()
+}
+
+export function NavUser({ user }: { user: AuthUser }) {
   const { isMobile } = useSidebar()
+  const router = useRouter()
+
+  const handleLogout = React.useCallback(async () => {
+    try {
+      await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      })
+
+      window.dispatchEvent(new Event("auth-changed"))
+      router.replace("/login")
+      router.refresh()
+    } catch (error) {
+      console.error(error)
+    }
+  }, [router])
 
   return (
     <SidebarMenu>
@@ -42,15 +63,19 @@ export function NavUser({
               size="lg"
               className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
             >
-              <Avatar className="h-8 w-8 rounded-lg">
-                <AvatarImage src={user.avatar} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+              <Avatar className="h-8 w-8 rounded-lg ring-1 ring-sidebar-border">
+                <AvatarFallback className="rounded-lg bg-sidebar-primary/10 text-sidebar-primary">
+                  {getInitials(user)}
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
-                <span className="truncate font-medium">{user.name}</span>
-                <span className="truncate text-xs">{user.email}</span>
+                <span className="truncate font-medium">
+                  {user.name ?? "Admin"}
+                </span>
+                <span className="truncate text-xs text-sidebar-foreground/70">
+                  {user.email}
+                </span>
               </div>
-              <ChevronsUpDownIcon className="ml-auto size-4" />
             </SidebarMenuButton>
           </DropdownMenuTrigger>
           <DropdownMenuContent
@@ -60,47 +85,30 @@ export function NavUser({
             sideOffset={4}
           >
             <DropdownMenuLabel className="p-0 font-normal">
-              <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
+              <div className="flex items-start gap-3 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-lg">
-                  <AvatarImage src={user.avatar} alt={user.name} />
-                  <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-lg">
+                    {getInitials(user)}
+                  </AvatarFallback>
                 </Avatar>
-                <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-medium">{user.name}</span>
-                  <span className="truncate text-xs">{user.email}</span>
+                <div className="grid flex-1 gap-1 text-left text-sm leading-tight">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="truncate font-medium">
+                      {user.name ?? "Admin"}
+                    </span>
+                    <Badge variant="outline" className="h-5 px-2 text-[10px]">
+                      {user.role}
+                    </Badge>
+                  </div>
+                  <span className="truncate text-xs text-muted-foreground">
+                    {user.email}
+                  </span>
                 </div>
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <SparklesIcon
-                />
-                Upgrade to Pro
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuGroup>
-              <DropdownMenuItem>
-                <BadgeCheckIcon
-                />
-                Account
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <CreditCardIcon
-                />
-                Billing
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <BellIcon
-                />
-                Notifications
-              </DropdownMenuItem>
-            </DropdownMenuGroup>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <LogOutIcon
-              />
+            <DropdownMenuItem onClick={handleLogout}>
+              <LogOutIcon />
               Log out
             </DropdownMenuItem>
           </DropdownMenuContent>
