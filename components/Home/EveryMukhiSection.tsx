@@ -43,7 +43,7 @@ function MukhiCard({ item }: { item: (typeof mukhis)[number] }) {
 export default function EveryMukhiSection() {
   return (
     <section className="py-24 bg-[#FCFBF7] border-b border-zinc-200/80 relative overflow-hidden">
-      <div className="container mx-auto px-4 md:px-8 relative z-10">
+      <div className="w-full px-5 md:px-20 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="font-serif text-3xl md:text-5xl font-normal tracking-wide text-stone-900 mb-4">
             Every Mukhi Holds <span className="text-[#c3a267]">Divine Energy</span>
@@ -53,7 +53,7 @@ export default function EveryMukhiSection() {
           </p>
         </div>
 
-        <div className="max-w-6xl mx-auto px-2 md:px-4">
+        <div className="w-full">
           <div className="grid grid-cols-2 sm:grid-cols-5 xl:grid-cols-10 gap-3 mb-3">
             {mukhis.slice(0, 10).map((item) => (
               <MukhiCard key={item.name} item={item} />

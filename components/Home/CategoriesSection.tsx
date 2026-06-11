@@ -10,7 +10,7 @@ const categories = [
 export default function CategoriesSection() {
   return (
     <section className="py-16 bg-[#FCFBF7] border-b border-zinc-200/80">
-      <div className="container mx-auto px-4 md:px-8">
+      <div className="w-full px-5 md:px-20">
         <div className="text-center max-w-2xl mx-auto mb-12">
           <h2 className="font-serif text-3xl md:text-5xl font-normal tracking-wide text-stone-900 mb-3">
             Explore Our Rudraksha Collection
@@ -20,7 +20,7 @@ export default function CategoriesSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 w-full">
           {categories.map((cat) => (
             <Link href={cat.href} key={cat.name} className="block group">
               <div className="bg-white border border-stone-200/50 rounded-[28px] overflow-hidden shadow-xs hover:shadow-md hover:border-[#c3a267]/20 transition-all duration-300 flex flex-col items-center">

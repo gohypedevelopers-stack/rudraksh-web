@@ -171,8 +171,29 @@ function ProductDetailContent({ slug }: { slug: string }) {
   const [selectedSize, setSelectedSize] = React.useState(product.sizes ? product.sizes[1] : "");
   const [quantity, setQuantity] = React.useState(1);
   const [activeTab, setActiveTab] = React.useState("description");
+  const [isAdded, setIsAdded] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkCart = () => {
+      try {
+        const stored = localStorage.getItem("rudraksha-cart");
+        if (stored) {
+          const cart = JSON.parse(stored);
+          setIsAdded(cart.some((item: any) => item.id === slug));
+        }
+      } catch (e) {}
+    };
+    checkCart();
+    window.addEventListener("add-to-cart", checkCart);
+    return () => window.removeEventListener("add-to-cart", checkCart);
+  }, [slug]);
 
   const handleAddToCart = () => {
+    if (isAdded) {
+      window.dispatchEvent(new Event("open-cart"));
+      return;
+    }
+
     const parsedPrice = parseInt(product.price.replace(/,/g, ""), 10);
     const parsedOldPrice = parseInt(product.oldPrice.replace(/,/g, ""), 10);
 
@@ -188,6 +209,24 @@ function ProductDetailContent({ slug }: { slug: string }) {
       },
     });
     window.dispatchEvent(cartEvent);
+  };
+
+  const handleBuyNow = () => {
+    const parsedPrice = parseInt(product.price.replace(/,/g, ""), 10);
+    const parsedOldPrice = parseInt(product.oldPrice.replace(/,/g, ""), 10);
+
+    const buyNowEvent = new CustomEvent("buy-now", {
+      detail: {
+        id: slug,
+        name: product.name,
+        subtitle: product.tagline,
+        price: parsedPrice,
+        oldPrice: parsedOldPrice,
+        discount: product.discount,
+        img: product.images[0],
+      },
+    });
+    window.dispatchEvent(buyNowEvent);
   };
 
   return (
@@ -335,10 +374,13 @@ function ProductDetailContent({ slug }: { slug: string }) {
                 onClick={handleAddToCart}
                 className="w-full bg-black hover:bg-zinc-800 text-white font-bold text-xs sm:text-sm tracking-[0.2em] uppercase h-14 rounded-xl transition-all duration-300 cursor-pointer shadow-xs hover:shadow-md"
               >
-                ADD TO CART
+                {isAdded ? "GO TO CART" : "ADD TO CART"}
               </button>
 
-              <button className="w-full bg-white hover:bg-black text-black hover:text-white border border-black font-bold text-xs sm:text-sm tracking-[0.2em] uppercase h-14 rounded-xl transition-all duration-300 cursor-pointer">
+              <button 
+                onClick={handleBuyNow}
+                className="w-full bg-white hover:bg-black text-black hover:text-white border border-black font-bold text-xs sm:text-sm tracking-[0.2em] uppercase h-14 rounded-xl transition-all duration-300 cursor-pointer"
+              >
                 BUY NOW
               </button>
             </div>

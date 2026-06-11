@@ -9,8 +9,8 @@ export default function StorySection() {
         </svg>
       </div>
 
-      <div className="container mx-auto px-4 md:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center max-w-6xl mx-auto">
+      <div className="w-full px-5 md:px-20 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center w-full">
           <div className="lg:col-span-5 relative">
             <div className="relative rounded-3xl overflow-hidden shadow-lg border border-stone-200/60 bg-white">
               <img src="/nepal_temple.png" alt="Nepali Rudraksha sourcing" className="w-full h-[420px] sm:h-[520px] object-cover" />

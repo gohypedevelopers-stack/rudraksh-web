@@ -3,7 +3,7 @@ export default function MissionSection() {
     <section className="py-24 bg-[#FCFBF7] relative overflow-hidden">
       <div className="absolute inset-0 pointer-events-none z-0 bg-[radial-gradient(circle_at_80%_20%,rgba(195,162,103,0.12),transparent_26%),radial-gradient(circle_at_20%_80%,rgba(0,0,0,0.04),transparent_30%),linear-gradient(180deg,rgba(252,251,247,0.92)_0%,rgba(247,242,234,0.98)_100%)]" />
 
-      <div className="container mx-auto px-4 md:px-8 relative z-10">
+      <div className="w-full px-5 md:px-20 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-14">
           <div className="inline-flex items-center gap-2 rounded-full border border-[#c3a267]/20 bg-white px-4 py-2 text-[10px] font-bold tracking-[0.25em] uppercase text-[#8c4f1c] mb-5">
             Our Mission
@@ -16,7 +16,7 @@ export default function MissionSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
           {[
             {
               title: "Authenticity",
@@ -57,7 +57,7 @@ export default function MissionSection() {
           ))}
         </div>
 
-        <div className="mt-14 rounded-3xl bg-[#3f2a1b] text-stone-100 px-6 py-8 md:px-10 md:py-10 max-w-6xl mx-auto border border-stone-800 shadow-lg">
+        <div className="mt-14 rounded-3xl bg-[#3f2a1b] text-stone-100 px-6 py-8 md:px-10 md:py-10 w-full border border-stone-800 shadow-lg">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center md:text-left">
             {[
               { value: "10,000+", label: "Devotees served" },

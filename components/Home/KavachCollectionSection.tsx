@@ -56,8 +56,8 @@ function handleAddKavachToCart(kavach: (typeof kavachProducts)[number]) {
 export default function KavachCollectionSection() {
   return (
     <section className="py-24 bg-[#FCFBF7] border-b border-zinc-200/80 relative overflow-hidden">
-      <div className="container mx-auto px-4 md:px-8 relative z-10">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 max-w-6xl mx-auto px-4 gap-6">
+      <div className="w-full px-5 md:px-20 relative z-10">
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 w-full gap-6">
           <div className="text-left">
             <h2 className="font-serif text-3xl md:text-5xl font-normal tracking-wide text-stone-900 mb-3">
               Divya Kavach <span className="text-[#c3a267] italic font-light">Collection</span>
@@ -77,7 +77,7 @@ export default function KavachCollectionSection() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
           {kavachProducts.map((kavach) => {
             const slug = kavach.name.toLowerCase().replace(/ /g, "-");
 

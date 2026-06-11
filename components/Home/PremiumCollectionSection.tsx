@@ -72,7 +72,7 @@ export default function PremiumCollectionSection() {
   return (
     <section className="min-h-screen flex flex-col justify-center py-16 bg-[#FCFBF7] border-b border-zinc-200/80 relative overflow-hidden">
       <div className="absolute inset-0 bg-[url('/collection_bg.png')] bg-cover bg-center bg-no-repeat opacity-10 pointer-events-none z-0" />
-      <div className="container mx-auto px-4 md:px-8 relative z-10">
+      <div className="w-full px-5 md:px-20 relative z-10">
         <div className="text-center max-w-xl mx-auto mb-16 relative z-10">
           <h2 className="font-serif text-3xl md:text-5xl font-normal tracking-wide text-stone-900 mb-2">
             Premium Rudraksha Collection
@@ -94,7 +94,7 @@ export default function PremiumCollectionSection() {
           </p>
         </div>
 
-        <div className="relative w-full max-w-6xl mx-auto px-4 md:px-12 relative z-10">
+        <div className="relative w-full z-10">
           <button
             onClick={() => {
               if (scrollRef.current) {

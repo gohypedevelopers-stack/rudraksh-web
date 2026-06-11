@@ -30,7 +30,7 @@ export default function BannerSlider() {
 
   return (
     <section className="w-full bg-[#FCFBF7] py-8 border-b border-zinc-200/80">
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="w-full px-5 md:px-20">
         <div className="relative overflow-hidden rounded-3xl border border-stone-200/60 shadow-lg aspect-[16/10] md:aspect-[21/9] lg:aspect-[12/5] group">
           <div
             className="flex w-full h-full transition-transform duration-700 ease-out"

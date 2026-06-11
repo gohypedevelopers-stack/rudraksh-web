@@ -9,8 +9,8 @@ const globalForPrisma = globalThis as unknown as {
 };
 
 const adapter = new PrismaNeon({
-  connectionString: env.DATABASE_URL,
-})
+  url: env.DATABASE_URL,
+} as any)
 
 function hasRequiredDelegates(client: PrismaClient | undefined): client is PrismaClient {
   return Boolean(

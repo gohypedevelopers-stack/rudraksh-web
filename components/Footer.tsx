@@ -69,7 +69,7 @@ export default function Footer() {
     <footer className="bg-[#FCFBF7] pt-16 border-t border-stone-200/80 relative overflow-hidden flex flex-col items-center w-full">
       
       {/* Banner Section: Need Help Choosing the Right Rudraksha */}
-      <div className="w-full max-w-6xl mx-auto px-4 mb-16 relative z-10">
+      <div className="w-full px-5 md:px-20 mb-16 relative z-10">
         <div className="w-full rounded-3xl bg-[#F6EDE2] p-8 flex flex-col lg:flex-row items-center justify-between gap-6 relative overflow-hidden border border-[#c3a267]/15">
           {/* Faint watermark mandala in banner */}
           <div className="absolute left-[-30px] top-1/2 -translate-y-1/2 opacity-[0.05] pointer-events-none select-none">
@@ -118,22 +118,15 @@ export default function Footer() {
       </div>
 
       {/* Main Footer Directory Grid */}
-      <div className="w-full max-w-6xl mx-auto px-4 mb-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 text-left relative z-10">
+      <div className="w-full px-5 md:px-20 mb-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-8 text-left relative z-10">
         
         {/* Column 1: Brand Info & Seals (lg:col-span-4) */}
         <div className="lg:col-span-4 flex flex-col items-start pr-0 lg:pr-8">
           <div className="flex items-center gap-3 mb-5">
-            <div className="w-12 h-12 rounded-full border border-[#c3a267]/40 overflow-hidden bg-white shrink-0 p-0.5 shadow-xs">
-              <img src="/collector_bead.png" alt="RudraLaksh" className="w-full h-full object-cover" />
-            </div>
             <div className="flex flex-col">
               <div className="flex items-center gap-1.5">
-                {/* Trident symbol */}
-                <svg className="w-4.5 h-4.5 text-stone-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                  <path d="M12 2v20 M6 5c2 2.5 10 2.5 12 0 M6 5v6 M18 5v6" />
-                </svg>
                 <span className="font-serif text-xl font-bold tracking-wider leading-none text-stone-900">
-                  SATVIK
+                  BHARAT STORE
                 </span>
               </div>
               <span className="text-[7.5px] tracking-[0.22em] font-sans font-bold uppercase mt-1 leading-none text-stone-500">
@@ -153,9 +146,9 @@ export default function Footer() {
             {/* Seal 1 */}
             <div className="flex flex-col items-center text-center">
               <svg className="w-7 h-7 text-stone-800" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                <path d="M12 2v20 M7 5c2 2.5 8 2.5 10 0 M7 5v5 M17 5v5" />
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
               </svg>
-              <span className="text-[9px] font-bold text-stone-900 tracking-wider uppercase mt-1.5">SATVIK</span>
+              <span className="text-[9px] font-bold text-stone-900 tracking-wider uppercase mt-1.5">BHARAT STORE</span>
               <span className="text-[7.5px] text-stone-500 tracking-wider uppercase font-semibold">TRUSTED</span>
             </div>
 
@@ -178,27 +171,22 @@ export default function Footer() {
           <div className="w-8 h-[2px] bg-[#c3a267] mb-5" />
           <ul className="space-y-3 text-xs text-stone-600 font-sans">
             {[
-              "All Rudraksha",
-              "Nepali Rudraksha",
-              "Indonesian Rudraksha",
-              "Kavach Collection",
-              "Rare Collection",
-              "Pooja Accessories",
-              "New Arrivals",
-              "Best Sellers"
+              { label: "Home", href: "/" },
+              { label: "Shop", href: "/shop" },
+              { label: "About Us", href: "/about-us" },
+              { label: "Contact Us", href: "/contact" }
             ].map((item) => (
-              <li key={item}>
-                <Link href="/shop" className="flex items-center justify-between hover:text-[#c3a267] transition-colors group">
-                  <span>{item}</span>
-                  <span className="text-[9px] text-stone-400 group-hover:text-[#c3a267] transition-transform duration-200 translate-x-0 group-hover:translate-x-0.5">→</span>
+              <li key={item.label}>
+                <Link href={item.href} className="block hover:text-[#c3a267] transition-colors">
+                  {item.label}
                 </Link>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Column 3: CUSTOMER SUPPORT (lg:col-span-2) */}
-        <div className="lg:col-span-2">
+        {/* Column 3: CUSTOMER SUPPORT (lg:col-span-3) */}
+        <div className="lg:col-span-3">
           <h4 className="font-sans text-xs font-bold text-stone-955 tracking-[0.15em] uppercase mb-3">
             CUSTOMER SUPPORT
           </h4>
@@ -206,13 +194,8 @@ export default function Footer() {
           <ul className="space-y-3 text-xs text-stone-600 font-sans">
             {[
               "Shipping Policy",
-              "Returns & Refunds",
-              "Track My Order",
-              "FAQ",
               "Terms & Conditions",
-              "Privacy Policy",
-              "Exchange / Cancel Order",
-              "Contact Us"
+              "Privacy Policy"
             ].map((item) => (
               <li key={item}>
                 <Link href="/support" className="hover:text-[#c3a267] transition-colors">
@@ -223,34 +206,10 @@ export default function Footer() {
           </ul>
         </div>
 
-        {/* Column 4: COMPANY (lg:col-span-2) */}
-        <div className="lg:col-span-2">
-          <h4 className="font-sans text-xs font-bold text-stone-955 tracking-[0.15em] uppercase mb-3">
-            COMPANY
-          </h4>
-          <div className="w-8 h-[2px] bg-[#c3a267] mb-5" />
-          <ul className="space-y-3 text-xs text-stone-600 font-sans">
-            {[
-              "About Us",
-              "Our Journey",
-              "Media",
-              "Blogs",
-              "Corporate Gifting",
-              "Bulk Orders",
-              "Vendor Zone",
-              "Careers"
-            ].map((item) => (
-              <li key={item}>
-                <Link href="/about-us" className="hover:text-[#c3a267] transition-colors">
-                  {item}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
 
-        {/* Column 5: CONTACT US (lg:col-span-2) */}
-        <div className="lg:col-span-2">
+
+        {/* Column 5: CONTACT US (lg:col-span-3) */}
+        <div className="lg:col-span-3">
           <h4 className="font-sans text-xs font-bold text-stone-955 tracking-[0.15em] uppercase mb-3">
             CONTACT US
           </h4>
@@ -279,7 +238,7 @@ export default function Footer() {
               </svg>
               <div className="flex flex-col">
                 <span className="font-bold text-stone-900 hover:text-[#c3a267] transition-colors cursor-pointer break-all">
-                  support@satvikstore.in
+                  support@bharatstore.in
                 </span>
               </div>
             </li>
@@ -305,30 +264,9 @@ export default function Footer() {
 
       {/* Bottom Socials, Payment Icons & Copyright Bar */}
       <div className="w-full border-t border-stone-200/60 pt-8 pb-4 relative z-10 bg-[#FAF8F5]">
-        <div className="w-full max-w-6xl mx-auto px-4 flex flex-col gap-6 items-center">
+        <div className="w-full px-5 md:px-20 flex flex-col gap-6 items-center">
           
-          {/* Payment Methods Row (Integrated) */}
-          <div className="flex flex-col items-center gap-3">
-            <span className="text-[9px] font-sans font-bold tracking-[0.2em] text-stone-400 uppercase">
-              WE ACCEPT
-            </span>
-            <div className="flex flex-wrap items-center justify-center gap-2.5">
-              {[
-                { name: "Visa", logo: <VisaLogo /> },
-                { name: "Mastercard", logo: <MastercardLogo /> },
-                { name: "UPI", logo: <UPILogo /> },
-                { name: "American Express", logo: <AmexLogo /> },
-                { name: "RuPay", logo: <RuPayLogo /> }
-              ].map((payment) => (
-                <div 
-                  key={payment.name} 
-                  className="w-14 h-9 bg-white border border-[#c3a267]/20 rounded-md flex items-center justify-center p-1.5 shadow-2xs hover:border-[#c3a267]/50 transition-colors"
-                >
-                  {payment.logo}
-                </div>
-              ))}
-            </div>
-          </div>
+
 
           {/* Social & Legal Row */}
           <div className="w-full flex flex-col md:flex-row items-center justify-between gap-6 pt-4 border-t border-stone-200/40">
@@ -352,17 +290,7 @@ export default function Footer() {
                       <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
                     </svg>
                   )},
-                  { name: "YouTube", icon: (
-                    <svg className="w-3.5 h-3.5 text-stone-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z" />
-                      <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02" fill="currentColor" />
-                    </svg>
-                  )},
-                  { name: "Pinterest", icon: (
-                    <svg className="w-3.5 h-3.5 text-stone-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
-                      <path d="M12 2a10 10 0 0 0-3.3 19.4c-.1-.9-.1-2.1.2-3l1.8-7.7c-.3-.6-.3-1.4 0-2 1-2 3-.5 2 1.4-.7 3.3-1.6 3.3-1 4.5.7 1.4 2.6.7 3.5-.8 2-3.3 2.5-6.5-.5-8.5-3.3-2.2-7.5-1.3-8.8 2.2a4 4 0 0 0 1 4c.3.3.3.4.2.8l-.4 1.5c-.1.3-.3.4-.6.3-2-.8-3-3.3-2.5-6 1-4.7 5.3-8.5 10.7-8.5 5.5 0 9 3.6 8.2 8.3-.7 4.5-3.8 7.6-7.7 7.2-1.3-.2-2.5-1-2-2.6l1.3-5.2c.4-1.6 0-3.2-1.2-3.6-1.5-.5-3 1.2-2.3 3.5z" fill="currentColor" />
-                    </svg>
-                  )}
+
                 ].map((social) => (
                   <button 
                     key={social.name}
@@ -377,7 +305,7 @@ export default function Footer() {
 
             {/* Copyright & policies */}
             <div className="flex flex-col md:flex-row items-center gap-4 text-[11px] text-stone-500 font-medium font-sans">
-              <span>© 2026 Satvik Store. All Rights Reserved.</span>
+              <span>© 2026 Bharat Store. All Rights Reserved.</span>
               <div className="flex items-center gap-3">
                 <Link href="/support" className="hover:underline">Privacy Policy</Link>
                 <span>|</span>

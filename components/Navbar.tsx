@@ -140,7 +140,7 @@ export default function Navbar() {
             : "bg-transparent border-transparent py-5 text-white"
         )}
       >
-        <div className="container mx-auto px-4 md:px-8 flex items-center justify-between">
+        <div className="w-full px-5 md:px-20 flex items-center justify-between">
           
           {/* Logo / Branding (Mandala + RUDRAKSHA + Subtitle) */}
           <Link href="/" className="flex items-center gap-3 group">

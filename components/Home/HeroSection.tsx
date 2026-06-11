@@ -24,7 +24,7 @@ export default function HeroSection() {
         ॐ
       </div>
 
-      <div className="container mx-auto px-4 md:px-8 relative z-10 w-full">
+      <div className="w-full px-5 md:px-20 relative z-10">
         <div className="max-w-2xl text-left relative z-10">
           <div
             className={cn(

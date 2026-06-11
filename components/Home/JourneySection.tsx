@@ -47,7 +47,7 @@ export default function JourneySection() {
         </svg>
       </div>
 
-      <div className="container mx-auto px-4 md:px-8 relative z-10">
+      <div className="w-full px-5 md:px-20 relative z-10">
         <div className="text-center max-w-3xl mx-auto mb-16">
           <h2 className="font-serif text-3xl md:text-5xl font-normal tracking-wide text-stone-900 mb-4">
             Choose Your Rudraksha Journey
@@ -57,7 +57,7 @@ export default function JourneySection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto px-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
           {journeyCards.map((card) => (
             <div key={card.alt} className="h-[460px] sm:h-[530px] relative rounded-3xl overflow-hidden shadow-lg group">
               <img
